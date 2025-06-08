@@ -67,7 +67,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .add("authorities", new ObjectMapper().writeValueAsString(roles))
                 .add("username", username)
                 .build();
-
+// BODY, CONTENT TYPE, HEADER AUTHORIZATION, TOKEN PREFIX
 
         String token = Jwts.builder()
                 .subject(username)
