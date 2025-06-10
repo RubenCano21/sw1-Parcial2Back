@@ -45,7 +45,7 @@ public class SecurityConfig {
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         JwtAuthenticationFilter jwtAuthFilter = new JwtAuthenticationFilter(authenticationManager());
-        jwtAuthFilter.setFilterProcessesUrl("/auth/login"); // Ruta personalizada para login
+        jwtAuthFilter.setFilterProcessesUrl("/api/auth/login"); // Ruta personalizada para login
 
 
         return http

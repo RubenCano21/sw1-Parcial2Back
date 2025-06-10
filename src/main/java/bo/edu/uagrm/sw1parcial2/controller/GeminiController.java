@@ -23,4 +23,10 @@ public class GeminiController {
         String respuesta = geminiService.generarContenido(prompt);
         return ResponseEntity.ok(respuesta);
     }
+
+    @PostMapping("/generate-ui")
+    public ResponseEntity<String> generateUI(@RequestBody String promptUser) {
+        String respuesta = geminiService.generarJsonUI(promptUser);
+        return ResponseEntity.ok(respuesta);
+    }
 }
