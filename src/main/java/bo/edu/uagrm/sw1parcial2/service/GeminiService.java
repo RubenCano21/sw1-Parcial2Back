@@ -52,16 +52,6 @@ public class GeminiService {
         return "Error generando contenido";
     }
 
-    public Object generarComponentesFlutter( String prompt) {
-        // Implementación para generar componentes de Flutter
-        // INPUT
-        // BOTON, TEXTO, IMAGEN, TEXTAREA, ETC
-        // Optener el Json que genera el front y pasarlo a geminis para que genere el código en Flutter
-        // obtener ese codigo y retornarlo como String y reconstruir el componente en Flutter
-        // luego actualizar el estado del componente con el nuevo código generado en el proyecto de Flutter
-        // finalmente, descargar un .zip con el proyecto de Flutter actualizado
-        return generarContenido(prompt);
-    }
 
     private final String promptSistema = """
         Eres un generador de interfaces Flutter. Devuélveme únicamente un JSON válido con la estructura de los componentes necesarios. 

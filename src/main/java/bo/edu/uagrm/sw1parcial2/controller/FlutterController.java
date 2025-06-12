@@ -1,24 +1,35 @@
 package bo.edu.uagrm.sw1parcial2.controller;
 
+import bo.edu.uagrm.sw1parcial2.service.FlutterService;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
 import java.util.*;
 
 @RestController
 @RequestMapping("/api/flutter")
+@CrossOrigin(origins = "**")
 public class FlutterController {
+
+    private final FlutterService flutterService;
 
     @Value("${gemini.api.url}")
     private String url ;
 
     private final RestTemplate restTemplate = new RestTemplate();
 
+    public FlutterController(FlutterService flutterService) {
+        this.flutterService = flutterService;
+    }
+
     @PostMapping("/generate")
-    public ResponseEntity<String> generateFlutterCode(@RequestBody Map<String, Object> json) {
-        String prompt = "Convierte el siguiente JSON de diseño en código Flutter:\n\n" + json.toString();
+    public ResponseEntity<String> generateFlutterCode(@RequestBody Object json) {
+        String prompt = "Convierte el siguiente JSON de diseño en código Flutter, sin las explicaciones:\n\n" + json.toString();
 
         try {
             HttpHeaders headers = new HttpHeaders();
@@ -51,5 +62,22 @@ public class FlutterController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al contactar con Gemini.");
         }
     }
+
+    // Endpoint para descargar el archivo .zip
+    @PostMapping("/download")
+    //@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public ResponseEntity<Resource> downloadFlutterProject(@RequestBody Map<String, String> body) throws IOException {
+        String flutterCode = body.get("code");
+
+        byte[] zipBytes = flutterService.generateFlutterZip(flutterCode);
+        ByteArrayResource resource = new ByteArrayResource(zipBytes);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=flutter_project.zip")
+                .contentLength(zipBytes.length)
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(resource);
+    }
+
 }
 

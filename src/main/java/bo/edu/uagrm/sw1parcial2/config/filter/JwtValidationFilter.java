@@ -35,6 +35,14 @@ public class JwtValidationFilter extends BasicAuthenticationFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain chain) throws ServletException, IOException {
+
+        String path = request.getServletPath();
+
+        if ("/api/auth/login".equals(path)) {
+            chain.doFilter(request, response);
+            return;
+        }
+
         String header = request.getHeader(HEADER_AUTHORIZATION);
 
         if (header == null || !header.startsWith(TOKEN_PREFIX)) {
@@ -75,4 +83,8 @@ public class JwtValidationFilter extends BasicAuthenticationFilter {
             response.setContentType(CONTENT_TYPE);
         }
     }
+
+
+
+
 }
