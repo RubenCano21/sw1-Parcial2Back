@@ -13,7 +13,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/api/flutter")
-@CrossOrigin(origins = "**")
+@CrossOrigin(origins = "https://flutter-ui-afaz.onrender.com")
 public class FlutterController {
 
     private final FlutterService flutterService;
